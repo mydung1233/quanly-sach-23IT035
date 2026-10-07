@@ -1,10 +1,91 @@
-<h2>Thêm sách mới</h2>
-{{#if error}}<div class="error">{{error}}</div>{{/if}}
-<form method="POST" action="/add">
-  <p><label>Mã sản phẩm (bắt đầu bằng <b>{{prefix}}</b>):<br>
-    <input name="code" type="text" required placeholder="{{prefix}}001"></label></p>
-  <p><label>Tên sách:<br><input name="title" required></label></p>
-  <p><label>Tác giả:<br><input name="author" required></label></p>
-  <p><label>Giá gốc (VNĐ):<br><input name="price" type="number" min="0" required></label></p>
-  <button type="submit">Lưu</button>
-</form>
+<div class="page-title">
+  <h2>Thêm sách mới</h2>
+  <p>Nhập thông tin sách để lưu vào hệ thống quản lý.</p>
+</div>
+
+<div class="card form-card">
+
+  <div style="margin-bottom:24px;">
+    <h3 style="margin:0 0 6px;">Thông tin sách</h3>
+    <p style="margin:0; color:#6b7280; font-size:13px;">
+      Dữ liệu sau khi lưu sẽ được ghi vào MongoDB Atlas.
+    </p>
+  </div>
+
+  {{#if error}}
+    <div class="error">
+      ⚠️ {{error}}
+    </div>
+  {{/if}}
+
+  <form method="POST" action="/add">
+
+    <div class="form-group">
+      <label for="code">Mã sản phẩm</label>
+
+      <input
+        id="code"
+        name="code"
+        type="text"
+        required
+        placeholder="{{prefix}}001"
+        pattern="{{prefix}}.*"
+        title="Mã sản phẩm phải bắt đầu bằng {{prefix}}"
+      >
+
+      <div class="hint">
+        Mã sản phẩm bắt buộc bắt đầu bằng
+        <strong>{{prefix}}</strong>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="title">Tên sách</label>
+
+      <input
+        id="title"
+        name="title"
+        type="text"
+        required
+        placeholder="Nhập tên sách"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="author">Tác giả</label>
+
+      <input
+        id="author"
+        name="author"
+        type="text"
+        required
+        placeholder="Nhập tên tác giả"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="price">Giá gốc (VNĐ)</label>
+
+      <input
+        id="price"
+        name="price"
+        type="number"
+        min="0"
+        step="1"
+        required
+        placeholder="Ví dụ: 100000"
+      >
+
+      <div class="hint">
+        VAT hiện tại: <strong>{{VAT_PERCENT}}%</strong>.
+        Giá sau thuế sẽ được hệ thống tự động tính.
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">
+      💾 Lưu sách
+    </button>
+
+  </form>
+
+</div>

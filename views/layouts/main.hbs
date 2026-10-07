@@ -2,25 +2,367 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Quản lý Sách</title>
+
   <style>
-    body { font-family: Arial, sans-serif; max-width: 900px; margin: 30px auto; padding: 0 15px; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background: #f0f0f0; }
-    .error { color: #c00; margin-bottom: 10px; }
-    footer { margin-top: 40px; padding-top: 10px; border-top: 1px solid #ccc; color: #555; }
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: white;
+      padding: 22px 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      opacity: 0.85;
+      font-size: 13px;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .nav .add-btn {
+      background: white;
+      color: #2563eb;
+      font-weight: bold;
+    }
+
+    .nav .add-btn:hover {
+      background: #eef2ff;
+    }
+
+    /* Main */
+    main {
+      padding: 32px 0 50px;
+    }
+
+    .page-title {
+      margin-bottom: 24px;
+    }
+
+    .page-title h2 {
+      margin: 0;
+      font-size: 28px;
+      color: #111827;
+    }
+
+    .page-title p {
+      margin: 7px 0 0;
+      color: #6b7280;
+    }
+
+    /* Cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e5e7eb;
+    }
+
+    .stat-label {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    /* Content card */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
+      border: 1px solid #e5e7eb;
+    }
+
+    /* Table */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding: 14px 12px;
+      border-bottom: 2px solid #e5e7eb;
+      text-align: left;
+    }
+
+    td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #eef2f7;
+      color: #374151;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    .code {
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    .price {
+      font-weight: 600;
+    }
+
+    .vat {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 20px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .empty {
+      text-align: center;
+      color: #9ca3af;
+      padding: 35px !important;
+    }
+
+    /* Form */
+    .form-card {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .hint {
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 9px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .submit-btn {
+      width: 100%;
+      border: none;
+      padding: 13px 18px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(37, 99, 235, 0.25);
+    }
+
+    .error {
+      padding: 12px 15px;
+      border-radius: 9px;
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      margin-bottom: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background: #111827;
+      color: #9ca3af;
+      padding: 22px 0;
+      font-size: 13px;
+    }
+
+    footer strong {
+      color: white;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav {
+        width: 100%;
+      }
+
+      .nav a {
+        flex: 1;
+        text-align: center;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title h2 {
+        font-size: 23px;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Quản lý Sách</h1>
-  <nav><a href="/">Danh sách</a> | <a href="/add">Thêm sách</a></nav>
-  <hr>
-  {{{body}}}
+
+  <header class="header">
+    <div class="container header-content">
+
+      <div class="brand">
+        <div class="brand-icon">📚</div>
+
+        <div>
+          <h1>Quản lý Sách</h1>
+          <p>Book Management System</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="/">Danh sách</a>
+        <a href="/add" class="add-btn">+ Thêm sách</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      {{{body}}}
+    </div>
+  </main>
+
   <footer>
-    Sinh viên: <strong>{{STUDENT_NAME}}</strong> — MSSV: <strong>{{STUDENT_ID}}</strong>
-    — VAT áp dụng: <strong>{{VAT_PERCENT}}%</strong>
+    <div class="container footer-content">
+      <div>
+        Sinh viên: <strong>{{STUDENT_NAME}}</strong>
+        &nbsp;|&nbsp;
+        MSSV: <strong>{{STUDENT_ID}}</strong>
+      </div>
+
+      <div>
+        VAT áp dụng:
+        <strong>{{VAT_PERCENT}}%</strong>
+      </div>
+    </div>
   </footer>
+
 </body>
 </html>

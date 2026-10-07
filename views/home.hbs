@@ -1,16 +1,91 @@
-<p>Số lần truy cập (lưu trong session trên Atlas): <strong>{{views}}</strong></p>
-<table>
-  <tr>
-    <th>Mã SP</th><th>Tên sách</th><th>Tác giả</th>
-    <th>Giá gốc</th><th>VAT</th><th>Giá sau thuế</th>
-  </tr>
-  {{#each books}}
-  <tr>
-    <td>{{code}}</td><td>{{title}}</td><td>{{author}}</td>
-    <td>{{formatMoney price}}</td><td>{{vatPercent}}%</td>
-    <td>{{formatMoney priceAfterVat}}</td>
-  </tr>
-  {{else}}
-  <tr><td colspan="6">Chưa có sách nào.</td></tr>
-  {{/each}}
-</table>
+<div class="page-title">
+  <h2>Danh sách sách</h2>
+  <p>Quản lý và theo dõi các đầu sách trong hệ thống.</p>
+</div>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-label">Số lần truy cập</div>
+    <div class="stat-value">{{views}}</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Mã sản phẩm</div>
+    <div class="stat-value">035</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">VAT áp dụng</div>
+    <div class="stat-value">{{VAT_PERCENT}}%</div>
+  </div>
+</div>
+
+<div class="card">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:15px;">
+    <div>
+      <h3 style="margin:0 0 5px;">Kho sách</h3>
+      <p style="margin:0; color:#6b7280; font-size:13px;">
+        Danh sách dữ liệu được đọc từ MongoDB Atlas
+      </p>
+    </div>
+
+    <a href="/add"
+       style="text-decoration:none; background:#2563eb; color:white; padding:10px 15px; border-radius:8px; font-size:14px; font-weight:bold;">
+      + Thêm sách
+    </a>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Mã SP</th>
+          <th>Tên sách</th>
+          <th>Tác giả</th>
+          <th>Giá gốc</th>
+          <th>VAT</th>
+          <th>Giá sau thuế</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each books}}
+        <tr>
+          <td>
+            <span class="code">{{code}}</span>
+          </td>
+
+          <td>
+            <strong>{{title}}</strong>
+          </td>
+
+          <td>{{author}}</td>
+
+          <td class="price">
+            {{formatMoney price}} ₫
+          </td>
+
+          <td>
+            <span class="vat">{{vatPercent}}%</span>
+          </td>
+
+          <td class="price">
+            {{formatMoney priceAfterVat}} ₫
+          </td>
+        </tr>
+
+        {{else}}
+
+        <tr>
+          <td colspan="6" class="empty">
+            📚 Chưa có sách nào trong hệ thống.
+          </td>
+        </tr>
+
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+</div>
