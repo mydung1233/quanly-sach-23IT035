@@ -1,0 +1,16 @@
+<p>Số lần truy cập (lưu trong session trên Atlas): <strong>{{views}}</strong></p>
+<table>
+  <tr>
+    <th>Mã SP</th><th>Tên sách</th><th>Tác giả</th>
+    <th>Giá gốc</th><th>VAT</th><th>Giá sau thuế</th>
+  </tr>
+  {{#each books}}
+  <tr>
+    <td>{{code}}</td><td>{{title}}</td><td>{{author}}</td>
+    <td>{{formatMoney price}}</td><td>{{vatPercent}}%</td>
+    <td>{{formatMoney priceAfterVat}}</td>
+  </tr>
+  {{else}}
+  <tr><td colspan="6">Chưa có sách nào.</td></tr>
+  {{/each}}
+</table>
